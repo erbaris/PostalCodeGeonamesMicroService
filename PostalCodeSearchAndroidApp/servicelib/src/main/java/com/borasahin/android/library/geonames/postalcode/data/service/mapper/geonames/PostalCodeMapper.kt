@@ -1,8 +1,8 @@
-package com.gokhandiyaroglu.android.app.geonames.postalcodesearch.data.mapper
+package com.borasahin.android.library.geonames.postalcode.data.service.mapper.geonames
 
+import com.borasahin.android.library.geonames.postalcode.data.service.dto.PostalCodeDTO
+import com.borasahin.android.library.geonames.postalcode.data.service.dto.PostalCodeSaveDTO
 import com.gokhandiyaroglu.android.library.geonames.postalcodesearch.retrofit.data.entity.PostalCode
-import org.csystem.android.library.geonames.postalcode.dto.PostalCodeDTO
-import org.csystem.android.library.geonames.postalcode.dto.PostalCodeSaveDTO
 import javax.inject.Inject
 
 class PostalCodeMapper @Inject constructor() : IPostalCodeMapper {
@@ -10,26 +10,28 @@ class PostalCodeMapper @Inject constructor() : IPostalCodeMapper {
     {
         return PostalCodeDTO().apply {
             adminCode1 = postalCode.adminCode1
-            longitude = postalCode.longitude
-            countryCode = postalCode.countryCode
+            adminCode2 = postalCode.adminCode2
             adminName1 = postalCode.adminName1
-            placeName = postalCode.placeName
+            adminName2 = postalCode.adminName2
+            longitude = postalCode.longitude
             latitude = postalCode.latitude
-            iSO31662Info = postalCode.iSO31662Info
+            plate = postalCode.plate
+            placeName = postalCode.placeName
         }
     }
 
     override fun toPostalCodeSaveDTO(postalCode: PostalCode): PostalCodeSaveDTO
     {
         return PostalCodeSaveDTO().apply {
-            code = postalCode.postalCode.toInt()
+            code = postalCode.code.toInt()
             adminCode1 = postalCode.adminCode1
-            longitude = postalCode.longitude
-            countryCode = postalCode.countryCode
+            adminCode2 = postalCode.adminCode2
             adminName1 = postalCode.adminName1
-            placeName = postalCode.placeName
+            adminName2 = postalCode.adminName2
+            longitude = postalCode.longitude
             latitude = postalCode.latitude
-            iSO31662Info = postalCode.iSO31662Info
+            plate = postalCode.plate
+            placeName = postalCode.placeName
         }
     }
 }

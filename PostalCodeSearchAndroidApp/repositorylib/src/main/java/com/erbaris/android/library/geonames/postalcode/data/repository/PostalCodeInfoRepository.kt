@@ -9,7 +9,12 @@ import java.util.*
 import javax.inject.Inject
 
 private const val CODE = "code"
+private const val QUERY_COUNT = "query_count"
 private const val QUERY_DATE_TIME = "query_date_time"
+private const val SAVE_DATE_TIME = "save_date_time"
+private const val SOURCE_SERVICE = "source_service"
+
+
 private const val TABLE_NAME = "postal_code_info"
 
 class PostalCodeInfoRepository @Inject constructor() : IPostalCodeInfoRepository {
@@ -21,7 +26,8 @@ class PostalCodeInfoRepository @Inject constructor() : IPostalCodeInfoRepository
         val code = cursor.getInt(0)
         val queryDateTime = cursor.getLong(1);
 
-        return PostalCodeInfo(code, DateTimeConvertUtil.toLocalDateTime(queryDateTime))
+        return PostalCodeInfo(code = code, queryDateTime = DateTimeConvertUtil.toLocalDateTime(queryDateTime),
+                        saveDateTime = DateTimeConvertUtil.toLocalDateTime(queryDateTime), queryCount = 1, sourceService = "csd")
     }
 
     override fun count(): Long
@@ -41,7 +47,7 @@ class PostalCodeInfoRepository @Inject constructor() : IPostalCodeInfoRepository
         var postalCodeInfo: PostalCodeInfo? = null
 
         try {
-            cursor = db.query(TABLE_NAME, projection, null, null, null, null, null)
+            cursor = db.query(TABLE_NAME, projection, "code = $code", null, null, null, null)
             if (cursor != null && cursor.moveToFirst())
                 postalCodeInfo = createPostalCodeInfo(cursor)
         }
@@ -56,7 +62,10 @@ class PostalCodeInfoRepository @Inject constructor() : IPostalCodeInfoRepository
         val cv = ContentValues()
 
         cv.put(CODE, postalCodeInfo?.code)
+        cv.put(SAVE_DATE_TIME, DateTimeConvertUtil.toMilliseconds(postalCodeInfo?.saveDateTime))
         cv.put(QUERY_DATE_TIME, DateTimeConvertUtil.toMilliseconds(postalCodeInfo?.queryDateTime))
+        cv.put(QUERY_COUNT, 1)
+        cv.put(SOURCE_SERVICE, "csd")
 
         db.insertOrThrow(TABLE_NAME, null, cv)
 
