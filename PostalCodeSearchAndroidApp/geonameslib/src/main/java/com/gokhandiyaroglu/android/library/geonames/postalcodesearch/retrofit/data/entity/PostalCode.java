@@ -1,6 +1,8 @@
 package com.gokhandiyaroglu.android.library.geonames.postalcodesearch.retrofit.data.entity;
 
 
+import androidx.annotation.NonNull;
+
 public class PostalCode {
     public String code;
     public String adminCode1;
@@ -17,5 +19,10 @@ public class PostalCode {
 
     public String placeName;
 
+    @NonNull
+    @Override
+    public String toString() {
+        return code + " " + adminName2 + " " + placeName ;
+    }
 }
 
